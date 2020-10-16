@@ -5,7 +5,7 @@ import { useStyles } from './styles';
 
 export const Signup = () => {
   const classes = useStyles();
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, watch, errors } = useForm();
 
   const signup = (data) => {
     console.log(data);
@@ -22,64 +22,82 @@ export const Signup = () => {
           Register Form
         </Typography>
         <TextField
-          error={errors.name ? true : false}
-          helperText={errors.name && 'Name is required'}
-          inputRef={register({ required: true })}
-          fullWidth={true}
-          size="small"
-          label="First Name"
           id="name"
           name="name"
-          variant="outlined"
-        />
-        <TextField
-          error={errors.lastname ? true : false}
-          helperText={errors.lastname && 'Lastname is required'}
-          inputRef={register({ required: true })}
+          label="First Name"
           fullWidth={true}
           size="small"
-          label="Last Name"
-          id="lastname"
-          name="lastname"
           variant="outlined"
+          inputRef={register({ required: true })}
+          error={errors.name ? true : false}
+          helperText={errors.name && 'Name is required'}
         />
         <TextField
+          id="lastname"
+          name="lastname"
+          label="Last Name"
+          fullWidth={true}
+          size="small"
+          variant="outlined"
+          inputRef={register({ required: true })}
+          error={errors.lastname ? true : false}
+          helperText={errors.lastname && 'Lastname is required'}
+        />
+        <TextField
+          id="password"
+          name="password"
+          label="Password"
+          type="password"
+          fullWidth={true}
+          size="small"
+          variant="outlined"
           inputRef={register({ required: true })}
           error={errors.password ? true : false}
           helperText={errors.password && 'Password is required'}
-          fullWidth={true}
-          size="small"
-          label="Password"
-          id="password"
-          name="password"
-          variant="outlined"
         />
         <TextField
+          id="secondPassword"
+          name="secondPassword"
+          label="Repeat Password"
+          type="password"
+          fullWidth={true}
+          size="small"
+          variant="outlined"
+          inputRef={register({
+            validate: (value) => {
+              return value === watch('password');
+            },
+          })}
+          error={errors.secondPassword ? true : false}
+          helperText={errors.secondPassword && 'Password dont match'}
+        />
+        <TextField
+          id="age"
+          name="age"
+          label="Age"
+          type="number"
+          fullWidth={true}
+          size="small"
+          variant="outlined"
           inputRef={register({ required: true })}
           error={errors.age ? true : false}
           helperText={errors.age && 'Age is required'}
-          fullWidth={true}
-          size="small"
-          label="Age"
-          id="age"
-          name="age"
-          variant="outlined"
         />
         <TextField
+          id="zipcode"
+          name="zipcode"
+          label="Zip Code"
+          fullWidth={true}
+          size="small"
+          variant="outlined"
           inputRef={register({ required: true })}
           error={errors.zipcode ? true : false}
           helperText={errors.zipcode && 'Zip Code is required'}
-          fullWidth={true}
-          size="small"
-          label="Zip Code"
-          id="zipcode"
-          name="zipcode"
-          variant="outlined"
         />
         <Button
-          fullWidth={true}
-          variant="contained"
           color="primary"
+          variant="contained"
+          fullWidth={true}
           type="submit">
           Register
         </Button>

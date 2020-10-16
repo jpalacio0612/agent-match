@@ -22,6 +22,17 @@ export const Signup = () => {
           Register Form
         </Typography>
         <TextField
+          id="email"
+          name="email"
+          label="Email"
+          fullWidth={true}
+          size="small"
+          variant="outlined"
+          inputRef={register({ required: true })}
+          error={errors.email ? true : false}
+          helperText={errors.email && 'Name is required'}
+        />
+        <TextField
           id="name"
           name="name"
           label="First Name"

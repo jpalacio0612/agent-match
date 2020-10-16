@@ -4,7 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { useStyles } from './styles';
-import { Signup } from '../Signup';
+import { Link } from 'react-router-dom';
 
 export const Header = () => {
   const classes = useStyles();
@@ -17,10 +17,12 @@ export const Header = () => {
             Agent Match
           </Typography>
           <Button color="inherit">Login</Button>
-          <Button color="inherit">Register</Button>
+
+          <Button component={Link} to="/signup" color="inherit">
+            Register
+          </Button>
         </Toolbar>
       </AppBar>
-      <Signup />
     </div>
   );
 };

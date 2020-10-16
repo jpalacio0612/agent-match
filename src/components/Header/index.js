@@ -16,8 +16,9 @@ export const Header = () => {
           <Typography variant="h6" className={classes.title}>
             Agent Match
           </Typography>
-          <Button color="inherit">Login</Button>
-
+          <Button component={Link} to="/login" color="inherit">
+            Login
+          </Button>
           <Button component={Link} to="/signup" color="inherit">
             Register
           </Button>

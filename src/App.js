@@ -3,6 +3,8 @@ import './App.css';
 import { Header } from './components/Header';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Signup } from './components/Signup';
+import { Login } from './components/Login';
+import { MatchView } from './components/MatchView';
 
 function App() {
   return (
@@ -11,6 +13,8 @@ function App() {
       <Switch>
         <Route exact path="/" />
         <Route exact path="/signup" component={Signup} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/match" component={MatchView} />
       </Switch>
     </Router>
   );

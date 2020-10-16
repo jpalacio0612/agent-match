@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useStyles } from './styles';
+import { Signup } from '../Signup';
 
 export const Header = () => {
   const classes = useStyles();
@@ -21,6 +22,7 @@ export const Header = () => {
           <Button color="inherit">Register</Button>
         </Toolbar>
       </AppBar>
+      <Signup />
     </div>
   );
 };

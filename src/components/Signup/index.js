@@ -1,14 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import { Button, Container, Typography, TextField } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 import { useStyles } from './styles';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+import { useHistory } from 'react-router-dom';
 
 export const Signup = () => {
   const classes = useStyles();
   const { register, handleSubmit, watch, errors } = useForm();
+  const [open, setOpen] = useState(false);
+  const history = useHistory();
 
   const signup = (data) => {
-    console.log(data);
+    axios({
+      url: 'http://localhost:8000/agents',
+      method: 'POST',
+      data: { ...data },
+    })
+      .then(() => {
+        setOpen(true);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    history.push('/login');
   };
 
   return (
@@ -113,6 +132,15 @@ export const Signup = () => {
           Register
         </Button>
       </form>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={open}
+        autoHideDuration={2000}
+        onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          Register Succesfull!
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

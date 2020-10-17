@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 export const MatchView = () => {
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
-      console.log('Latitude is :', position.coords.latitude);
-      console.log('Longitude is :', position.coords.longitude);
+      const myLatitude = position.coords.latitude.toFixed(5);
+      const mylongitude = position.coords.longitude.toFixed(5);
     });
   }, []);
 

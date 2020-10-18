@@ -2,13 +2,26 @@ import React from 'react';
 import { Button, Container, Typography, TextField } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 import { useStyles } from './styles';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 export const Login = () => {
   const classes = useStyles();
+  const history = useHistory();
   const { register, handleSubmit, watch, errors } = useForm();
 
   const signup = (data) => {
-    console.log(data);
+    axios({
+      url: 'http://localhost:8000/agents/signin',
+      method: 'POST',
+      data: { ...data },
+    })
+      .then(({ data }) => {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userId', data.userId);
+        history.push('/match');
+      })
+      .catch((error) => console.log(error));
   };
 
   return (

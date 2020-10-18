@@ -1,12 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import MapboxGLMap from '../MapBoxGLMap';
 
 export const MatchView = () => {
-  useEffect(() => {
+  const handleClick = () => {
     navigator.geolocation.getCurrentPosition((position) => {
-      const myLatitude = position.coords.latitude.toFixed(5);
-      const mylongitude = position.coords.longitude.toFixed(5);
+      const myLatitude = position.coords.latitude;
+      const myLongitude = position.coords.longitude;
+      axios({
+        url: 'http://localhost:8000/agents/getmatch',
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        data: { myLatitude, myLongitude },
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => console.log(error));
     });
-  }, []);
+  };
 
-  return <div></div>;
+  return (
+    <div>
+      <button onClick={handleClick}>Get Match</button>
+      <MapboxGLMap />
+    </div>
+  );
 };

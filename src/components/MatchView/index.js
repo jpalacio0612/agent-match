@@ -13,7 +13,11 @@ export const MatchView = () => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        data: { myLatitude, myLongitude },
+        data: {
+          userId: localStorage.getItem('userId'),
+          myLatitude,
+          myLongitude,
+        },
       })
         .then((res) => {
           console.log(res);

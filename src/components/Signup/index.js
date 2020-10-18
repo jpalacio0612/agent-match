@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Button, Container, Typography, TextField } from '@material-ui/core';
-import { useForm } from 'react-hook-form';
+import {
+  Button,
+  Container,
+  Typography,
+  TextField,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+} from '@material-ui/core';
+import { Controller, useForm } from 'react-hook-form';
 import { useStyles } from './styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
@@ -9,13 +17,16 @@ import { useHistory } from 'react-router-dom';
 
 export const Signup = () => {
   const classes = useStyles();
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, watch, errors, control } = useForm();
   const [open, setOpen] = useState(false);
   const history = useHistory();
+  const [isAgent, setIsAgent] = useState(true);
 
   const signup = (data) => {
+    const { userType } = data;
+
     axios({
-      url: 'http://localhost:8000/agents',
+      url: `http://localhost:8000/${userType}s`,
       method: 'POST',
       data: { ...data },
     })
@@ -40,6 +51,30 @@ export const Signup = () => {
         <Typography variant="h5" className={classes.title}>
           Register Form
         </Typography>
+        <Typography variant="h7" className={classes.title}>
+          Agent or Contact
+        </Typography>
+        <Controller
+          defaultValue="agent"
+          as={
+            <RadioGroup row aria-label="userType">
+              <FormControlLabel
+                onClick={() => setIsAgent(true)}
+                value="agent"
+                control={<Radio color="primary" />}
+                label="Agent"
+              />
+              <FormControlLabel
+                onClick={() => setIsAgent(false)}
+                value="contact"
+                control={<Radio color="primary" />}
+                label="Contact"
+              />
+            </RadioGroup>
+          }
+          name="userType"
+          control={control}
+        />
         <TextField
           id="email"
           name="email"
@@ -124,6 +159,19 @@ export const Signup = () => {
           error={errors.zipcode ? true : false}
           helperText={errors.zipcode && 'Zip Code is required'}
         />
+        {isAgent && (
+          <TextField
+            id="profession"
+            name="profession"
+            label="Profession"
+            fullWidth={true}
+            size="small"
+            variant="outlined"
+            inputRef={register({ required: true })}
+            error={errors.profession ? true : false}
+            helperText={errors.profession && 'Profession is required'}
+          />
+        )}
         <Button
           color="primary"
           variant="contained"

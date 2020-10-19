@@ -15,6 +15,8 @@ export const MatchView = () => {
   const [devmode, setDevmode] = useState('no');
   const [devLatitude, setDevLatitude] = useState(0);
   const [devLongitude, setDevLongitude] = useState(0);
+  const [range, setRange] = useState(100);
+  const [matches, setMatches] = useState([]);
 
   const handleChange = (event) => {
     setDevmode(event.target.value);
@@ -41,12 +43,13 @@ export const MatchView = () => {
         },
         data: {
           userId: localStorage.getItem('userId'),
+          range,
           myLatitude,
           myLongitude,
         },
       })
         .then((res) => {
-          console.log(res);
+          setMatches(res.data);
         })
         .catch((error) => console.log(error));
     });
@@ -83,6 +86,13 @@ export const MatchView = () => {
               />
             </RadioGroup>
           </FormControl>
+          <TextField
+            onChange={(e) => setRange(e.target.value)}
+            id="range"
+            label="Range on meters"
+            variant="outlined"
+            size="small"
+          />
           {devmode === 'yes' && (
             <>
               <TextField
@@ -102,6 +112,12 @@ export const MatchView = () => {
           <Button onClick={handleClick} variant="contained" color="primary">
             Get Match
           </Button>
+          {matches.map((match) => (
+            <div>
+              <h1>{match['name']}</h1>
+              <h1>{match['email']}</h1>
+            </div>
+          ))}
         </Container>
       </Grid>
       <Grid item xs={12} sm={8}>

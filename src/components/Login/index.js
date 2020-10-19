@@ -4,11 +4,14 @@ import { useForm } from 'react-hook-form';
 import { useStyles } from './styles';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { saveAuthUserAction } from '../../redux/actions/saveAuthUserAction';
 
 export const Login = () => {
   const classes = useStyles();
   const history = useHistory();
-  const { register, handleSubmit, watch, errors } = useForm();
+  const dispatch = useDispatch();
+  const { register, handleSubmit, errors } = useForm();
 
   const signup = (data) => {
     axios({
@@ -17,12 +20,13 @@ export const Login = () => {
       data: { ...data },
     })
       .then(({ data }) => {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('userId', data.userId);
-        localStorage.setItem('userType', data.userType);
+        dispatch(saveAuthUserAction({ ...data, isAuth: true }));
+        // localStorage.setItem('token', data.token);
+        // localStorage.setItem('userId', data.userId);
+        // localStorage.setItem('userType', data.userType);
         history.push('/match');
       })
-      .catch((error) => console.log(error));
+      .catch((res) => alert(res.response.data.message));
   };
 
   return (

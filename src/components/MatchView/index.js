@@ -7,11 +7,13 @@ export const MatchView = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       const myLatitude = position.coords.latitude;
       const myLongitude = position.coords.longitude;
+      const userType = localStorage.getItem('userType');
+      const token = localStorage.getItem('token');
       axios({
-        url: 'http://localhost:8000/agents/getmatch',
+        url: `http://localhost:8000/${userType}s/getmatch`,
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${token}`,
         },
         data: {
           userId: localStorage.getItem('userId'),

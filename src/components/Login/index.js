@@ -12,13 +12,14 @@ export const Login = () => {
 
   const signup = (data) => {
     axios({
-      url: 'http://localhost:8000/agents/signin',
+      url: 'http://localhost:8000/users/signin',
       method: 'POST',
       data: { ...data },
     })
       .then(({ data }) => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('userId', data.userId);
+        localStorage.setItem('userType', data.userType);
         history.push('/match');
       })
       .catch((error) => console.log(error));

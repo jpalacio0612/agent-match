@@ -8,15 +8,17 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { useStyles } from './styles';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveAuthUserAction } from '../../redux/actions/authUserActions';
 
 export const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const classes = useStyles();
-  const reduxState = useSelector(({ state }) => state || {});
-  console.log(reduxState);
+  const reduxState = useSelector((state) => state || {});
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -24,6 +26,12 @@ export const Header = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    setAnchorEl(null);
+    dispatch(saveAuthUserAction({ isAuth: false }));
+    history.push('/');
   };
 
   return (
@@ -57,8 +65,8 @@ export const Header = () => {
                 }}
                 open={open}
                 onClose={handleClose}>
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem>Get Match</MenuItem>
+                <MenuItem onClick={handleLogout}>LogOut</MenuItem>
               </Menu>
             </div>
           ) : (

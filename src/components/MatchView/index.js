@@ -10,13 +10,18 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import TextField from '@material-ui/core/TextField';
+import { useDispatch, useSelector } from 'react-redux';
+import { updatePositionAction } from '../../redux/actions/authUserActions';
+import { Typography } from '@material-ui/core';
 
 export const MatchView = () => {
+  const dispatch = useDispatch();
   const [devmode, setDevmode] = useState('no');
   const [devLatitude, setDevLatitude] = useState(0);
   const [devLongitude, setDevLongitude] = useState(0);
   const [range, setRange] = useState(100);
   const [matches, setMatches] = useState([]);
+  const reduxState = useSelector((state) => state);
 
   const handleChange = (event) => {
     setDevmode(event.target.value);
@@ -33,8 +38,8 @@ export const MatchView = () => {
         myLatitude = position.coords.latitude;
         myLongitude = position.coords.longitude;
       }
-      const userType = localStorage.getItem('userType');
-      const token = localStorage.getItem('token');
+      const userType = reduxState.userType;
+      const token = reduxState.token;
       axios({
         url: `http://localhost:8000/${userType}s/getmatch`,
         method: 'POST',
@@ -42,14 +47,22 @@ export const MatchView = () => {
           Authorization: `Bearer ${token}`,
         },
         data: {
-          userId: localStorage.getItem('userId'),
+          userId: reduxState.userId,
           range,
           myLatitude,
           myLongitude,
         },
       })
         .then((res) => {
-          setMatches(res.data);
+          const lastLatitude = res.data.agent.lastLatitude;
+          const lastLongitude = res.data.agent.lastLongitude;
+          dispatch(
+            updatePositionAction({
+              lastLatitude: lastLatitude,
+              lastLongitude: lastLongitude,
+            }),
+          );
+          setMatches(res.data.matches);
         })
         .catch((error) => console.log(error));
     });
@@ -87,21 +100,23 @@ export const MatchView = () => {
             </RadioGroup>
           </FormControl>
           <TextField
+            margin="dense"
             onChange={(e) => setRange(e.target.value)}
             id="range"
             label="Range on meters"
             variant="outlined"
-            size="small"
           />
           {devmode === 'yes' && (
             <>
               <TextField
+                margin="dense"
                 onChange={(e) => setDevLatitude(e.target.value)}
                 id="latitude"
                 label="Latitude"
                 variant="outlined"
               />
               <TextField
+                margin="dense"
                 onChange={(e) => setDevLongitude(e.target.value)}
                 id="longitude"
                 label="Longitude"
@@ -109,20 +124,26 @@ export const MatchView = () => {
               />
             </>
           )}
-          <Button onClick={handleClick} variant="contained" color="primary">
+          <Button
+            size="large"
+            onClick={handleClick}
+            variant="contained"
+            color="primary">
             Get Match
           </Button>
           {matches.map((match) => (
-            <div>
-              <h1>{match['name']}</h1>
-              <h1>{match['email']}</h1>
-            </div>
+            <Container>
+              <Typography variant="h5" color="primary">
+                {match['name']}
+              </Typography>
+              <Typography variant="h6">{match['email']}</Typography>
+            </Container>
           ))}
         </Container>
       </Grid>
       <Grid item xs={12} sm={8}>
         <Container fixed maxWidth="lg">
-          <MapboxGLMap />
+          <MapboxGLMap matches={matches} />
         </Container>
       </Grid>
     </Grid>

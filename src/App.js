@@ -7,6 +7,7 @@ import { Login } from './components/Login';
 import { MatchView } from './components/MatchView';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import MapboxGLMap from './components/MapBoxGLMap';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/match" component={MatchView} />
+          <Route exact path="/map" component={MapboxGLMap} />
         </Switch>
       </Router>
     </Provider>

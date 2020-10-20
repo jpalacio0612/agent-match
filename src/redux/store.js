@@ -1,4 +1,4 @@
-import { saveAuthUserReducer } from './reducers/saveAuthUserReducer';
+import { saveAuthUserReducer } from './reducers/authUserReducer';
 import { createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { loadState, saveState } from '../localStorage';

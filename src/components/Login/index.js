@@ -5,7 +5,7 @@ import { useStyles } from './styles';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { saveAuthUserAction } from '../../redux/actions/saveAuthUserAction';
+import { saveAuthUserAction } from '../../redux/actions/authUserActions';
 
 export const Login = () => {
   const classes = useStyles();
@@ -21,9 +21,6 @@ export const Login = () => {
     })
       .then(({ data }) => {
         dispatch(saveAuthUserAction({ ...data, isAuth: true }));
-        // localStorage.setItem('token', data.token);
-        // localStorage.setItem('userId', data.userId);
-        // localStorage.setItem('userType', data.userType);
         history.push('/match');
       })
       .catch((res) => alert(res.response.data.message));

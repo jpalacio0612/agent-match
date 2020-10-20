@@ -35,6 +35,13 @@ const MapboxGLMap = ({ matches = [] }) => {
       <Marker
         latitude={reduxState['lastLatitude']}
         longitude={reduxState['lastLongitude']}>
+        <Typography
+          className={classes.text}
+          color="primary"
+          variant="subtitle1"
+          align="center">
+          Here
+        </Typography>
         <img className={classes.gps_icon} src={hereIcon} alt="here" />
       </Marker>
       {matches.map((match) => (

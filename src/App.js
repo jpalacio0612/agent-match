@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Signup } from './components/Signup';
 import { Login } from './components/Login';
 import { MatchView } from './components/MatchView';
+import { Home } from './components/Home';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import MapboxGLMap from './components/MapBoxGLMap';
@@ -15,7 +16,7 @@ function App() {
       <Router>
         <Header />
         <Switch>
-          <Route exact path="/" />
+          <Route exact path="/" component={Home} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/match" component={MatchView} />

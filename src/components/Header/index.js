@@ -40,7 +40,11 @@ export const Header = () => {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography
+            component={Link}
+            to="/"
+            variant="h6"
+            className={classes.title}>
             Agent Match
           </Typography>
           {reduxState['isAuth'] ? (
@@ -67,7 +71,9 @@ export const Header = () => {
                 }}
                 open={open}
                 onClose={handleClose}>
-                <MenuItem>Get Match</MenuItem>
+                <MenuItem component={Link} to="/match">
+                  Get Match
+                </MenuItem>
                 <MenuItem onClick={handleLogout}>LogOut</MenuItem>
               </Menu>
             </div>

@@ -43,7 +43,7 @@ export const MatchView = () => {
       const userType = reduxState.userType;
       const token = reduxState.token;
       axios({
-        url: `http://localhost:8000/${userType}s/getmatch`,
+        url: `${process.env.REACT_APP_BACKEND_URL}/${userType}s/getmatch`,
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

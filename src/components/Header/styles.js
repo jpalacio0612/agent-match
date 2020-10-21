@@ -9,5 +9,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    textDecoration: 'none',
+    color: 'white',
   },
 }));

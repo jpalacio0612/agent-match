@@ -27,7 +27,7 @@ export const Signup = () => {
     const { userType } = data;
 
     axios({
-      url: `http://localhost:8000/${userType}s`,
+      url: `${process.env.REACT_APP_BACKEND_URL}/${userType}s`,
       method: 'POST',
       data: { ...data },
     })

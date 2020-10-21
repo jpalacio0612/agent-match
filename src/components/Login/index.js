@@ -15,12 +15,11 @@ export const Login = () => {
 
   const signin = (data) => {
     axios({
-      url: 'http://localhost:8000/users/signin',
+      url: `${process.env.REACT_APP_BACKEND_URL}/users/signin`,
       method: 'POST',
       data: { ...data },
     })
       .then(({ data }) => {
-        console.log(data);
         dispatch(saveAuthUserAction({ ...data, isAuth: true }));
         history.push('/match');
       })

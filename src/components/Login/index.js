@@ -1,8 +1,8 @@
 import React from 'react';
+import axios from 'axios';
 import { Button, Container, Typography, TextField } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 import { useStyles } from './styles';
-import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { saveAuthUserAction } from '../../redux/actions/authUserActions';
@@ -13,13 +13,14 @@ export const Login = () => {
   const dispatch = useDispatch();
   const { register, handleSubmit, errors } = useForm();
 
-  const signup = (data) => {
+  const signin = (data) => {
     axios({
       url: 'http://localhost:8000/users/signin',
       method: 'POST',
       data: { ...data },
     })
       .then(({ data }) => {
+        console.log(data);
         dispatch(saveAuthUserAction({ ...data, isAuth: true }));
         history.push('/match');
       })
@@ -32,7 +33,7 @@ export const Login = () => {
         className={classes.root}
         noValidate
         autoComplete="off"
-        onSubmit={handleSubmit(signup)}>
+        onSubmit={handleSubmit(signin)}>
         <Typography variant="h5" className={classes.title}>
           Login
         </Typography>

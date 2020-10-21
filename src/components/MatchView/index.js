@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import MapboxGLMap from '../MapBoxGLMap';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import TextField from '@material-ui/core/TextField';
+import {
+  Grid,
+  Button,
+  Container,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  TextField,
+} from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePositionAction } from '../../redux/actions/authUserActions';
 import { Typography } from '@material-ui/core';
 
 export const MatchView = () => {
   const dispatch = useDispatch();
-  const [devmode, setDevmode] = useState('no');
+  const [devmode, setDevmode] = useState(false);
   const [devLatitude, setDevLatitude] = useState(0);
   const [devLongitude, setDevLongitude] = useState(0);
   const [range, setRange] = useState(100);
@@ -24,14 +26,14 @@ export const MatchView = () => {
   const reduxState = useSelector((state) => state);
 
   const handleChange = (event) => {
-    setDevmode(event.target.value);
+    setDevmode(!devmode);
   };
 
   const handleClick = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       let myLatitude = 0;
       let myLongitude = 0;
-      if (devmode === 'yes') {
+      if (devmode) {
         myLatitude = devLatitude;
         myLongitude = devLongitude;
       } else {
@@ -54,8 +56,8 @@ export const MatchView = () => {
         },
       })
         .then((res) => {
-          const lastLatitude = res.data.agent.lastLatitude;
-          const lastLongitude = res.data.agent.lastLongitude;
+          const lastLatitude = res.data.user.lastLatitude;
+          const lastLongitude = res.data.user.lastLongitude;
           dispatch(
             updatePositionAction({
               lastLatitude: lastLatitude,
@@ -88,12 +90,12 @@ export const MatchView = () => {
               value={devmode}
               onChange={handleChange}>
               <FormControlLabel
-                value="no"
+                value={false}
                 control={<Radio color="primary" />}
                 label="No"
               />
               <FormControlLabel
-                value="yes"
+                value={true}
                 control={<Radio color="primary" />}
                 label="Yes"
               />
@@ -106,7 +108,7 @@ export const MatchView = () => {
             label="Range on meters"
             variant="outlined"
           />
-          {devmode === 'yes' && (
+          {devmode && (
             <>
               <TextField
                 margin="dense"
@@ -132,7 +134,7 @@ export const MatchView = () => {
             Get Match
           </Button>
           {matches.map((match) => (
-            <Container>
+            <Container key={match._id}>
               <Typography variant="h5" color="primary">
                 {match['name']}
               </Typography>

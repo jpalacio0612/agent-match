@@ -14,6 +14,7 @@ import { useStyles } from './styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import { useHistory } from 'react-router-dom';
+import { emailRegEx } from '../../utils/regex';
 
 export const Signup = () => {
   const classes = useStyles();
@@ -82,9 +83,15 @@ export const Signup = () => {
           fullWidth={true}
           size="small"
           variant="outlined"
-          inputRef={register({ required: true })}
+          inputRef={register({ required: true, pattern: emailRegEx })}
           error={errors.email ? true : false}
-          helperText={errors.email && 'Name is required'}
+          helperText={
+            errors.email && errors.email.type === 'required'
+              ? 'Email is required'
+              : errors.email && errors.email.type === 'pattern'
+              ? 'Invalid Email'
+              : null
+          }
         />
         <TextField
           id="name"
@@ -116,9 +123,15 @@ export const Signup = () => {
           fullWidth={true}
           size="small"
           variant="outlined"
-          inputRef={register({ required: true })}
+          inputRef={register({ required: true, minLength: 6 })}
           error={errors.password ? true : false}
-          helperText={errors.password && 'Password is required'}
+          helperText={
+            errors.password && errors.password.type === 'required'
+              ? 'password is required'
+              : errors.password && errors.password.type === 'minLength'
+              ? 'minimum password of 6 letters'
+              : null
+          }
         />
         <TextField
           id="secondPassword"

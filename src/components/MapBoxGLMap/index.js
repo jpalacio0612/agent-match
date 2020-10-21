@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapGL, { Marker } from 'react-map-gl';
 import { useSelector } from 'react-redux';
@@ -17,7 +17,6 @@ const MapboxGLMap = ({ matches = [] }) => {
   });
 
   useEffect(() => {
-    console.log(matches);
     const myLatitude = reduxState['lastLatitude'];
     const myLongitude = reduxState['lastLongitude'];
     setViewport({ ...viewport, latitude: myLatitude, longitude: myLongitude });

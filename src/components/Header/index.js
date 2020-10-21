@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import React, { useState } from 'react';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  MenuItem,
+  Menu,
+} from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import { useStyles } from './styles';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';

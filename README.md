@@ -1,68 +1,65 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Welcome to Agent Match
 
-## Available Scripts
+Project made in MongoDb, Express, React and Node, Redux, MaterialUI, Mapbox.
 
-In the project directory, you can run:
+This application consists of connecting agents with possible contacts based on their geolocation.
 
-### `yarn start`
+## Launch locally
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Frontend
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```shell
 
-### `yarn test`
+$ git clone https://github.com/jpalacio0612/agent-match.git
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+$ cd agent-match
 
-### `yarn build`
+$ npm install
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+$ npm run start
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The frontend is based on React by default it runs at http://localhost:3000/
 
-### `yarn eject`
+### Backend
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```shell
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+$ git clone https://github.com/jpalacio0612/agent-match-backend.git
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+$ cd agent-match-backend
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+$ npm install
 
-## Learn More
+$ npm run start
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The backend is made in node, express and mongoose by default it runs inhttp://localhost:8000/
 
-### Code Splitting
+### Database
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+The database is stored in mongoatlasDB so no additional configuration is required.
 
-### Analyzing the Bundle Size
+## Operation of the application
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+1. Registry.
 
-### Making a Progressive Web App
+The user can be registered both as an agent or as a contact, the form is based on react-hook-form and has validations such as required fields, patterns, minimum of letters in the password. Once the user registers, his information is stored in the backend, his password is encrypted thanks to bcrypt and he is assigned a token with JWT.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+2. Login
 
-### Advanced Configuration
+The user logs in with his email and password. the backend returns a token and additional information that is stored in redux, redux also synchronizes with the local storage so that the session persists even after reloading the page. Once this is done, you will be redirected to the Match page.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+3. Match
 
-### Deployment
+The user can choose two modes:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+- no DevMode: In this mode the user can only choose the range in meters around where he will search for possible contacts. When the user presses get match, he must grant permission to the browser to obtain his geoposition and based on this position the backend will return the contacts found in that range.
 
-### `yarn build` fails to minify
+- DevMode: In this mode the user, in addition to choosing the range in meters around, can choose the coordinates (latitude, longitude) of his position, pretending to be in another place. I recommend using the following SAN FRANCISCO coordinates: latitude: 37.762649 longitude: -122.457759 because most contacts are registered close to these coordinates.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+4.  Match algorithm
+
+The algorithm is based on using the MapBox library to obtain the distance between the user's position and the positions of the different contacts registered in the application. A cycle is performed to iterate over the arrangement of the contact positions and return the indices of those that meet the condition of being in the range of meters around, to then filter the original arrangement with these indices and return the result to the frontend to be rendered on the map.
